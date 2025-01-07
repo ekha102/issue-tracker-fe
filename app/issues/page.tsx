@@ -4,7 +4,7 @@ import CreatedIssue from './new/page'
 import { Button } from '@radix-ui/themes';
 import Link from 'next/link';
 
-const page = () => {
+const IssuePage = () => {
   return (
     <div>
       <h1>Issue Page</h1>
@@ -13,4 +13,4 @@ const page = () => {
   )
 }
 
-export default page
+export default IssuePage
