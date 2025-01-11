@@ -1,6 +1,5 @@
 "use client";
 import React from 'react'
-import CreatedIssue from './new/page'
 import { Button } from '@radix-ui/themes';
 import Link from 'next/link';
 

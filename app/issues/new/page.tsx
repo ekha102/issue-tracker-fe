@@ -1,16 +1,20 @@
 "use client";
-import { Box, Button, Callout, Flex, TextArea, TextField } from '@radix-ui/themes'
+import { validateForm } from '@/app/validateForm';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Box, Button, Callout, Flex, Text, TextArea, TextField } from '@radix-ui/themes'
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 
 
-type issueForm = {
-  issue_title: string;
-  issue_desc: string;
-}
+// type issueForm = {
+//   issue_title: string;
+//   issue_desc: string;
+// }
+type issueForm = z.infer<typeof validateForm>
 
 export default function CreatedIssue() {
   const {
@@ -18,7 +22,11 @@ export default function CreatedIssue() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<issueForm>()
+  } = useForm<issueForm>(
+    {
+      resolver: zodResolver(validateForm)
+    }
+  )
 
   const router = useRouter();
   const [error, setError] = useState("");
@@ -33,7 +41,7 @@ export default function CreatedIssue() {
     }
 
   }
-  console.log(error);
+  // console.log(errors);
 
 
 
@@ -57,9 +65,11 @@ export default function CreatedIssue() {
           </Box>
           <Box maxWidth="400px">
             <TextField.Root placeholder="Title" {...register("issue_title")} />
+            {errors.issue_title ? <Text color='red' as='p'>{errors.issue_title.message}</Text> : ""}
           </Box>
           <Box maxWidth="400px">
             <TextArea placeholder="Description" {...register("issue_desc")} />
+            {errors.issue_desc ? <Text color='red' as='p'>{errors.issue_desc.message}</Text> : ""}
           </Box>
           <Box>
             <Button>Submit</Button>
