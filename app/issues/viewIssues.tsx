@@ -15,8 +15,8 @@ const ViewIssues = ({ issuesList }: Props) => {
         <Table.Row>
           <Table.ColumnHeaderCell>ID</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Title</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell>Status</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell>Created Date</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell className="hidden md:table-cell">Status</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell className="hidden md:table-cell">Created Date</Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>
 
@@ -25,9 +25,9 @@ const ViewIssues = ({ issuesList }: Props) => {
           return (
             <Table.Row key={ele.issue_id}>
               <Table.RowHeaderCell>{ele.issue_id}</Table.RowHeaderCell>
-              <Table.Cell>{ele.issue_title}</Table.Cell>
-              <Table.Cell>{ele.issue_status}</Table.Cell>
-              <Table.Cell>{ele.issue_created.toDateString()}</Table.Cell>
+              <Table.Cell>{ele.issue_title} <div className="block md:hidden">{ele.issue_status}</div></Table.Cell>
+              <Table.Cell className="hidden md:table-cell">{ele.issue_status}</Table.Cell>
+              <Table.Cell className="hidden md:table-cell">{ele.issue_created.toDateString()}</Table.Cell>
             </Table.Row>
           );
         })}
