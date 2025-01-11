@@ -1,11 +1,12 @@
 import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { validateForm } from "../../validateForm";
-
+import delay from 'delay';
 
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
+  await delay(5000);
   const validation = validateForm.safeParse(body);
   // console.log("Validation: ", validation);
   if (validation.error) {

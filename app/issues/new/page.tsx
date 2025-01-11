@@ -1,12 +1,13 @@
 "use client";
 import { validateForm } from '@/app/validateForm';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Callout, Flex, Text, TextArea, TextField } from '@radix-ui/themes'
+import { Box, Button, Callout, Flex, Spinner, Text, TextArea, TextField } from '@radix-ui/themes'
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+
 
 
 
@@ -30,13 +31,17 @@ export default function CreatedIssue() {
 
   const router = useRouter();
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+ 
 
   const onSubmit = async (values: issueForm) => {
     // console.log(values);
     try {
+      setIsSubmitting(true);
       await axios.post("/api/issues", values);
       router.push("/issues");
     } catch (error) {
+      setIsSubmitting(false);
       setError("An unexpected error occurred.");
     }
 
@@ -72,7 +77,7 @@ export default function CreatedIssue() {
             {errors.issue_desc ? <Text color='red' as='p'>{errors.issue_desc.message}</Text> : ""}
           </Box>
           <Box>
-            <Button>Submit</Button>
+            <Button disabled={isSubmitting}>{isSubmitting && <Spinner size="2"></Spinner>} Submit</Button>
           </Box>
         </Flex>
       </form>
