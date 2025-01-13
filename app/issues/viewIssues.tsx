@@ -1,6 +1,7 @@
 import { Issue } from '@prisma/client'
-import { Table } from '@radix-ui/themes'
+import { Badge, Table } from '@radix-ui/themes'
 import React from 'react'
+import IssueStatusBudge from './issueStatusBudge'
 
 interface Props {
   issuesList: Issue,
@@ -8,6 +9,8 @@ interface Props {
 
 const ViewIssues = ({ issuesList }: Props) => {
   // console.log("Data:", issuesList);
+
+
 
   return (
     <Table.Root variant='surface'>
@@ -21,12 +24,12 @@ const ViewIssues = ({ issuesList }: Props) => {
       </Table.Header>
 
       <Table.Body>
-        {issuesList.map((ele:any) => {
+        {issuesList.map((ele) => {
           return (
             <Table.Row key={ele.issue_id}>
               <Table.RowHeaderCell>{ele.issue_id}</Table.RowHeaderCell>
-              <Table.Cell>{ele.issue_title} <div className="block md:hidden">{ele.issue_status}</div></Table.Cell>
-              <Table.Cell className="hidden md:table-cell">{ele.issue_status}</Table.Cell>
+              <Table.Cell>{ele.issue_title} <div className="block md:hidden"><IssueStatusBudge status={ele.issue_status} /></div></Table.Cell>
+              <Table.Cell className="hidden md:table-cell"><IssueStatusBudge status={ele.issue_status} /></Table.Cell>
               <Table.Cell className="hidden md:table-cell">{ele.issue_created.toDateString()}</Table.Cell>
             </Table.Row>
           );
