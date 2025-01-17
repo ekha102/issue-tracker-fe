@@ -24,6 +24,8 @@ interface Props {
 
 
 export default function IssueForm({issue} : Props) {
+  const {issue_id, issue_title, issue_desc} = issue!;
+
   const {
     register,
     handleSubmit,
@@ -44,7 +46,11 @@ export default function IssueForm({issue} : Props) {
     // console.log(values);
     try {
       setIsSubmitting(true);
-      await axios.post("/api/issues", values);
+      if (issue_id) {
+        await axios.put(`/api/issues/${issue_id}`, values)
+      } else {
+        await axios.post("/api/issues", values);
+      }
       router.push("/issues");
     } catch (error) {
       setIsSubmitting(false);
@@ -54,7 +60,9 @@ export default function IssueForm({issue} : Props) {
   }
   // console.log(errors);
 
-  const {issue_title, issue_desc} = issue!;
+  
+  // console.log("Data: ", issue);
+
 
 
 
@@ -79,7 +87,7 @@ export default function IssueForm({issue} : Props) {
             {errors.issue_title ? <Text color='red' as='p'>{errors.issue_title.message}</Text> : ""}
           </Box>
           <Box maxWidth="400px">
-            <TextArea placeholder="Description" {...register("issue_desc")}  defaultValue={issue_desc}/>
+            <TextArea placeholder="Description" {...register("issue_desc")} defaultValue={issue_desc}/>
             {errors.issue_desc ? <Text color='red' as='p'>{errors.issue_desc.message}</Text> : ""}
           </Box>
           <Box>
