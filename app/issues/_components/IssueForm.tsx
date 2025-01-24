@@ -24,7 +24,7 @@ interface Props {
 
 
 export default function IssueForm({issue} : Props) {
-  const {issue_id, issue_title, issue_desc} = issue!;
+  const {issue_id, issue_title, issue_desc} = issue || {};
 
   const {
     register,
@@ -91,7 +91,7 @@ export default function IssueForm({issue} : Props) {
             {errors.issue_desc ? <Text color='red' as='p'>{errors.issue_desc.message}</Text> : ""}
           </Box>
           <Box>
-            <Button disabled={isSubmitting}>{isSubmitting && <Spinner size="2"></Spinner>} Submit</Button>
+            <Button disabled={isSubmitting}>{isSubmitting && <Spinner size="2" />} {issue_id ? "Update Issue" : "Submit"}</Button>
           </Box>
         </Flex>
       </form>

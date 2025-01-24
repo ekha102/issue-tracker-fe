@@ -9,9 +9,10 @@ interface Props {
 }
 
 const EditIssuePage = async ({params}: Props) => {
+  if (isNaN(Number(params.id))) notFound();
   
   const issue = await prisma?.issue.findUnique({
-    where: { issue_id: parseInt(params?.id)}
+    where: { issue_id: parseInt(params!.id)}
     });
 
   if (!issue) notFound();
@@ -19,7 +20,7 @@ const EditIssuePage = async ({params}: Props) => {
   return (
     <IssueForm issue={issue}/>
   )
-  // dfd 
+
 }
 
 export default EditIssuePage;

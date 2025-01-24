@@ -20,6 +20,7 @@ const ViewIssues = ({ issuesList }: Props) => {
           <Table.ColumnHeaderCell>ID</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Title</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell className="hidden md:table-cell">Status</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell className="hidden md:table-cell">Description</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell className="hidden md:table-cell">Created Date</Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>
@@ -34,6 +35,7 @@ const ViewIssues = ({ issuesList }: Props) => {
                   {ele.issue_title} <div className="block md:hidden"><IssueStatusBudge status={ele.issue_status} /></div>
                 </Link>
               </Table.Cell>
+              <Table.Cell className="hidden md:table-cell">{ele.issue_desc}</Table.Cell>
               <Table.Cell className="hidden md:table-cell"><IssueStatusBudge status={ele.issue_status} /></Table.Cell>
               <Table.Cell className="hidden md:table-cell">{ele.issue_created.toDateString()}</Table.Cell>
             </Table.Row>
