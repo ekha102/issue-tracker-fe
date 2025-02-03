@@ -11,11 +11,6 @@ import { z } from 'zod';
 
 
 
-
-// type issueForm = {
-//   issue_title: string;
-//   issue_desc: string;
-// }
 type issueFormData = z.infer<typeof validateForm>
 
 interface Props {
@@ -29,7 +24,6 @@ export default function IssueForm({issue} : Props) {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<issueFormData>(
     {
