@@ -9,6 +9,7 @@ import { Pencil2Icon } from "@radix-ui/react-icons"
 import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import authOptions from '@/app/auth/AuthOptions';
+import SelectAssignee from '../_components/selectAssignee';
 
 // import DeleteIssuePage from '../delete/[id]/pppage';
 
@@ -64,6 +65,7 @@ const issueDetailsPage = async ({ params }: Props) => {
 
         <Box>
           {session ? <Flex direction="column" gap="2">
+            <SelectAssignee />
             <Button><Pencil2Icon /> <Link href={`/issues/edit/${issue_id}`}>Edit Issue </Link></Button>
             <Button color='red'><Link href={`/issues/delete/${issue_id}`}>Delete</Link></Button>
           </Flex> : ""}
