@@ -1,3 +1,4 @@
+
 import { prisma } from '@/prisma/client'
 import { Box, Button, Card, Flex, Grid, Heading, Text } from '@radix-ui/themes';
 import { notFound } from 'next/navigation';
@@ -6,6 +7,8 @@ import IssueStatusBudge from '../issueStatusBudge';
 import Markdown from 'react-markdown';
 import { Pencil2Icon } from "@radix-ui/react-icons"
 import Link from 'next/link';
+import { getServerSession } from 'next-auth';
+import authOptions from '@/app/auth/AuthOptions';
 
 // import DeleteIssuePage from '../delete/[id]/pppage';
 
@@ -16,6 +19,10 @@ interface Props {
 
 
 const issueDetailsPage = async ({ params }: Props) => {
+
+  const session = await getServerSession(authOptions);
+
+  // console.log("Session: ", session); 
   
 
   if (isNaN(Number(params.id))) notFound();
@@ -56,10 +63,11 @@ const issueDetailsPage = async ({ params }: Props) => {
         </Box>
 
         <Box>
-          <Flex direction="column" gap="2">
+          {session ? <Flex direction="column" gap="2">
             <Button><Pencil2Icon /> <Link href={`/issues/edit/${issue_id}`}>Edit Issue </Link></Button>
             <Button color='red'><Link href={`/issues/delete/${issue_id}`}>Delete</Link></Button>
-          </Flex>
+          </Flex> : ""}
+          
         </Box>
       </Grid>
 
