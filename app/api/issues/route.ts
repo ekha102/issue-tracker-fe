@@ -13,15 +13,18 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({}, {status:401});
   
   const body = await request.json();
-  await delay(5000);
+  const {issue_title, issue_desc} = body;
+  
   const validation = validateForm.safeParse(body);
   // console.log("Validation: ", validation);
   if (validation.error) {
     // console.log("Detail Validation: ", validation.error.errors);
     return NextResponse.json(validation.error.format(), {status:400})
   }
+
   
-  const {issue_title, issue_desc} = body;
+  
+  
   const createdIssue = await prisma.issue.create({
     data: {
       issue_title,
