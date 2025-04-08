@@ -6,18 +6,20 @@ import ViewIssues from './viewIssues';
 import { prisma } from '@/prisma/client';
 import IssueStatusFilter from './_components/IssueStatusFilter';
 import { Issue, Status } from '@prisma/client';
-import { useSearchParams } from 'next/navigation';
 
 
-type SearchParams = Promise<{ status: Status, orderBy: keyof Issue }>;
+
+type SearchParams = Promise<{ status: Status, orderBy: keyof Issue, page: string }>;
 
 interface Props {
-  searchParams: SearchParams;
+  searchParams: SearchParams,
 }
 
 
 const IssuePage = async(props: Props) => {
   const searchParams = await props.searchParams;
+  const page = parseInt(searchParams.page) || 1;
+  const pageSize = 5;
   // const currentSearchParams = useSearchParams();
 
   // console.log("CurrentlySearchParams:", currentSearchParams)
@@ -37,19 +39,17 @@ const IssuePage = async(props: Props) => {
   // const orderBy = searchParams.orderBy ? {[searchParams.orderBy] : "asc"} : undefined
   const orderBy = columns.map(col => col.value).includes(searchParams.orderBy) ? {[searchParams.orderBy] : 'asc'} : undefined
   
-  
-
- 
-
-  
-
   const issuesList = await prisma.issue.findMany({
     where: {
       issue_status: status,
     },
-    orderBy
+    orderBy,
+    skip: (page-1) * pageSize,
+    take: pageSize,
   });
   // console.log("Data: ", issuesList);
+
+  const issueCount = await prisma.issue.count({where:{issue_status:status}})
 
 
   return (
@@ -59,7 +59,7 @@ const IssuePage = async(props: Props) => {
         <IssueStatusFilter/>
         <Button><Link href="/issues/new">Create Issue</Link></Button>
       </Flex>
-      <ViewIssues issuesList={issuesList} searchParams={searchParams} columns={columns}/>      
+      <ViewIssues issuesList={issuesList} searchParams={searchParams} columns={columns} page={page} pageSize={pageSize} issueCount={issueCount}/>      
     </div>
   )
 }
