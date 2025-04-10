@@ -9,7 +9,8 @@ import { Pencil2Icon } from "@radix-ui/react-icons"
 import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import authOptions from '@/app/auth/AuthOptions';
-import SelectAssignee from '../_components/selectAssignee';
+import SelectAssignee from '../_components/SelectAssignee';
+
 
 // import DeleteIssuePage from '../delete/[id]/pppage';
 
@@ -75,6 +76,18 @@ const issueDetailsPage = async ({ params }: Props) => {
 
     </div>
   )
+}
+
+export const generateMetadata = async ({ params }: Props) => {
+  const issue = await prisma.issue.findUnique({
+    where: {issue_id: parseInt(params.id)}
+  })
+
+  return {
+    title: issue?.issue_title,
+    description: "Details of issue " + issue?.issue_id,
+  }
+
 }
 
 export default issueDetailsPage

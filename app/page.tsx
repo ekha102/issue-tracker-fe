@@ -3,6 +3,9 @@ import Pagination from "./Pagination";
 import LatestIssues from "./LatestIssues";
 import IssueSummary from "./IssueSummary";
 import { prisma } from "@/prisma/client";
+import IssueChart from "./IssueChart";
+import { Flex, Grid } from "@radix-ui/themes";
+import { Metadata } from "next";
 
 
 
@@ -20,9 +23,17 @@ export default async function Home() {
     where: {issue_status:"CLOSED"}
   });
   return (
-    <>
-      {/* <LatestIssues/> */}
-      <IssueSummary open={openCount} inProgress={inProgressCount} closed={closedCount}/>
-    </>
+    <Grid columns={{initial: "1", md:"2"}} gap="5">
+      <Flex direction="column" gap="5">
+        <IssueSummary open={openCount} inProgress={inProgressCount} closed={closedCount}/>
+        <IssueChart open={openCount} inProgress={inProgressCount} closed={closedCount}/>
+      </Flex>
+      <LatestIssues/>
+    </Grid>
   );
+}
+
+export const metadata: Metadata = {
+  title: "Issue Tracker - Dashboard",
+  description: "View a summary of project issue",
 }

@@ -6,6 +6,7 @@ import ViewIssues from './viewIssues';
 import { prisma } from '@/prisma/client';
 import IssueStatusFilter from './_components/IssueStatusFilter';
 import { Issue, Status } from '@prisma/client';
+import { Metadata } from 'next';
 
 
 
@@ -64,4 +65,11 @@ const IssuePage = async(props: Props) => {
   )
 }
 
+export const metadata: Metadata = {
+  title: "Issue Tracker - Issue List",
+  description: "View all project issues",
+}
+
+
 export default IssuePage
+
