@@ -2,7 +2,7 @@
 import { prisma } from '@/prisma/client'
 import { Box, Button, Card, Flex, Grid, Heading, Text } from '@radix-ui/themes';
 import { notFound } from 'next/navigation';
-import React, { useState } from 'react'
+import React, { cache } from 'react'
 import IssueStatusBudge from '../issueStatusBudge';
 import Markdown from 'react-markdown';
 import { Pencil2Icon } from "@radix-ui/react-icons"
@@ -19,6 +19,11 @@ interface Props {
   params: { id: string }
 }
 
+const fetchUser = cache(async (issueId: number) => {
+  return await prisma.issue.findUnique({
+    where: {issue_id: issueId}
+  });
+})
 
 const issueDetailsPage = async ({ params }: Props) => {
 
@@ -35,9 +40,7 @@ const issueDetailsPage = async ({ params }: Props) => {
 
 
 
-  const issueDetails = await prisma.issue.findUnique({
-    where: { issue_id: parseInt(params.id) },
-  });
+  const issueDetails = await fetchUser(parseInt(params.id));
 
 
   if (!issueDetails) notFound();
@@ -79,9 +82,7 @@ const issueDetailsPage = async ({ params }: Props) => {
 }
 
 export const generateMetadata = async ({ params }: Props) => {
-  const issue = await prisma.issue.findUnique({
-    where: {issue_id: parseInt(params.id)}
-  })
+  const issue = await fetchUser(parseInt(params.id));
 
   return {
     title: issue?.issue_title,
